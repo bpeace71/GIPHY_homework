@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Giphy Search</title>
+</head>
+
+<body>
+  <div id="buttons">
+    <button data-topic="pug">
+      Pugs
+    </button>
+    <button data-topic="Groot">
+      Groot
+    </button>
+
+    <button data-topic="spaceballs">
+      Spaceballs
+    </button>
+
+    <button data-topic="bill murray">
+      Bill Murray
+    </button>
+
+    <button data-topic="hulk">
+      Hulk
+    </button>
+
+    <button data-topic="Santa Claus">
+      Santa Claus
+    </button>
+    <!-- **************************************** -->
+
+
+    <!-- STEP THREE: open this file in the browser and click on your buttons. If they don't work, then fix your buttons -->
+
+    <!-- STEP FOUR: go over the JavaScript with your partners, and explain the lines of code to each other. -->
+
+  </div>
+
+  <div id="gifs-appear-here">
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script type="text/javascript">
+    $("button").on("click", function() {
+      var topics = $(this).attr("data-topic");
+      var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
+        topics + "&api_key=q1e0LWH5l6n5CtHmPOuKG46KilT9ufbd&limit=5";
+
+      $.ajax({
+          url: queryURL,
+          method: "GET"
+        })
+        .done(function(response) {
+          var results = response.data;
+
+          for (var i = 0; i < results.length; i++) {
+            var gifDiv = $("<div class='item'>");
+
+            var rating = results[i].rating;
+
+            var p = $("<p>").text("Rating: " + rating);
+
+            var topicImage = $("<img>");
+            topicImage.attr("src", results[i].images.fixed_height.url);
+
+            gifDiv.prepend(p);
+            gifDiv.prepend(topicImage);
+
+            $("#gifs-appear-here").prepend(gifDiv);
+          }
+        });
+    });
+  </script>
+</body>
+
+</html>
